@@ -65,6 +65,59 @@ router.get("/:id", (req, res) => {
       });
     });
 });
-
+//// setup DELETE function for /api/posts/:id
+router.delete("/:id", (req, res) => {
+  const id = Number(req.params.id);
+  console.log(id);
+  db.remove(id)
+    .then(post => {
+      console.log(post);
+      /// check to see if the post with the given ID exists in the database
+      if (!post) {
+        res.status(404).json({
+          message: "The post with the specified ID does not exist."
+        });
+      } else {
+        res.status(200).json({
+          message: "post was deleted"
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        error: "The post could not be removed"
+      });
+    });
+});
+/// setup PUT function
+router.put("/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const postObj = req.body;
+  //// check to ensure updated request contains title and contents
+  if (!postObj.title || !postObj.contents) {
+    res.status(400).json({
+      errorMessage: "Please provide title and contents for the post."
+    });
+  } else {
+    db.update(id, postObj)
+      .then(post => {
+        ////check to see if post with given ID exists in the database
+        if (!post) {
+          res.status(404).json({
+            message: "The post with the specified ID does not exist."
+          });
+        } else {
+          res.status(200).json({
+            message: "post was updated"
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: "The post information could not be modified."
+        });
+      });
+  }
+});
 //export router
 module.exports = router;
