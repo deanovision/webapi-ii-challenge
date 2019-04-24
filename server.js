@@ -6,6 +6,8 @@ const server = express();
 const postsRouter = require("./posts/posts-router");
 // tell server to parse json
 server.use(express.json());
+/// tell server to use cors
+server.use(cors());
 // setup routing for all /api/posts HTTP calls
 server.use("/api/posts", postsRouter);
 
