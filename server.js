@@ -1,5 +1,7 @@
 // import express using common js
 const express = require("express");
+/// import cors
+const cors = require("cors");
 // setup up our server using by invoking express
 const server = express();
 // import postsRouter
